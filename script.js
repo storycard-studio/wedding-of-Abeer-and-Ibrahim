@@ -1,5 +1,4 @@
-const $ = (selector, root = document) => root.querySelector(selector);
-const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+const $ = (selector, root = document) => root.querySelector(selector); const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
 const preloader = $("#preloader");
 const landingScreen = $("#landingScreen");
@@ -71,30 +70,27 @@ function updateCountdown(){
   const difference = weddingDate.getTime() - now.getTime();
   if(difference <= 0) return;
 
-  const totalSeconds = Math.floor(difference / 1000);
-  $("#days").textContent = String(Math.floor(totalSeconds / 86400)).padStart(2,"0");
-  $("#hours").textContent = String(Math.floor((totalSeconds % 86400) / 3600)).padStart(2,"0");
-  $("#minutes").textContent = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2,"0");
-  $("#seconds").textContent = String(totalSeconds % 60).padStart(2,"0");
-}
-updateCountdown();
-setInterval(updateCountdown, 1000);
+  let totalSeconds = Math.floor(difference / 1000);
+  
+  const d = Math.floor(totalSeconds / 86400);
+  totalSeconds -= d * 86400;
+  
+  const h = Math.floor(totalSeconds / 3600);
+  totalSeconds -= h * 3600;
+  
+  const m = Math.floor(totalSeconds / 60);
+  totalSeconds -= m * 60;
+  
+  const s = totalSeconds;
 
-const revealObserver = new IntersectionObserver((entries, observer) => {
-  entries.forEach((entry) => {
-    if(entry.isIntersecting){
-      entry.target.classList.add("visible");
-      observer.unobserve(entry.target);
-    }
-  });
-}, { threshold:.12 });
-
-$$(".reveal").forEach((element) => { revealObserver.observe(element); });
+  $("#days").textContent = String(d).padStart(2, "0");
+  $("#hours").textContent = String(h).padStart(2, "0");
+  $("#minutes").textContent = String(m).padStart(2, "0");
+  $("#seconds").textContent = String(s).padStart(2, "0"); } updateCountdown(); setInterval(updateCountdown, 1000);  const revealObserver = new IntersectionObserver((entries, observer) => {   entries.forEach((entry) => {     if(entry.isIntersecting){       entry.target.classList.add("visible");       observer.unobserve(entry.target);     }   }); }, { threshold:.12 });  $$(".reveal").forEach((element) => { revealObserver.observe(element); });
 
 let attendanceChoice = "yes";
-$$(".attendance-button").forEach((button) => {
-  button.addEventListener("click", () => {
-    $$(".attendance-button").forEach((btn) => btn.classList.remove("active"));
+$$(".attendance-button").forEach((button) => {   button.addEventListener("click", () => {     $$
+(".attendance-button").forEach((btn) => btn.classList.remove("active"));
     button.classList.add("active");
     attendanceChoice = button.dataset.choice;
   });
@@ -110,7 +106,7 @@ rsvpForm.addEventListener("submit", async (event) => {
   formStatus.textContent = "جارٍ إرسال التأكيد...";
 
   try {
-    const response = await fetch("https://formspree.io/f/mljdrqby", {
+    const response = await fetch("https://formspree.io/f/xoevvrkb", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
